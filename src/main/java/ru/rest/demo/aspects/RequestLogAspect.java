@@ -22,10 +22,12 @@ import java.util.stream.IntStream;
 public class RequestLogAspect {
 
     @Pointcut("within(@org.springframework.web.bind.annotation.RestController *)")
-    public void restControllers(){}
+    public void restControllers() {
+    }
 
     @Pointcut("execution(public * *(..))")
-    public void publicMethods(){}
+    public void publicMethods() {
+    }
 
     @Around("restControllers() && publicMethods()")
     public Object log(final ProceedingJoinPoint pjp) throws Throwable {

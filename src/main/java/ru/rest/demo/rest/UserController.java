@@ -31,11 +31,11 @@ public class UserController {
     @GetMapping()
     public Page<Userok> getAll(@RequestParam(required = false) String name,
                                @RequestParam(required = false) LocalDate date,
-                               @PageableDefault(size = 10) Pageable pageable) {
-        if(Objects.nonNull(name)){
+                               @PageableDefault() Pageable pageable) {
+        if (Objects.nonNull(name)) {
             return repository.findAllByName(name, pageable);
         }
-        if(Objects.nonNull(date)){
+        if (Objects.nonNull(date)) {
             return repository.findAllByCreatedAtBetween(date.atTime(LocalTime.MIN), date.atTime(LocalTime.MAX), pageable);
         }
         return repository.findAll(pageable);
