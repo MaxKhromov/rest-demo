@@ -3,6 +3,7 @@ package ru.rest.demo.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -18,12 +19,19 @@ public class Userok {
 
     String name;
 
-    LocalDateTime createDateTime;
+    LocalDateTime createdAt;
+    LocalDateTime modifiedAt;
+
 
     @PrePersist
     public void prePersist() {
         id = UUID.randomUUID();
-        createDateTime = LocalDateTime.now();
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        modifiedAt = LocalDateTime.now();
     }
 
 }

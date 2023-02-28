@@ -4,7 +4,6 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import ru.rest.demo.repo.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -38,7 +36,7 @@ public class UserController {
             return repository.findAllByName(name, pageable);
         }
         if(Objects.nonNull(date)){
-            return repository.findAllByCreateDateTimeBetween(date.atTime(LocalTime.MIN), date.atTime(LocalTime.MAX), pageable);
+            return repository.findAllByCreatedAtBetween(date.atTime(LocalTime.MIN), date.atTime(LocalTime.MAX), pageable);
         }
         return repository.findAll(pageable);
     }

@@ -16,7 +16,7 @@ public class UserokTest {
         Assertions.assertTrue(Objects.nonNull(userok1.getId()));
         LocalDateTime now = LocalDateTime.now();
         int nowInMilis = now.get(ChronoField.MILLI_OF_SECOND);
-        int save = userok1.getCreateDateTime().get(ChronoField.MILLI_OF_SECOND);
+        int save = userok1.getCreatedAt().get(ChronoField.MILLI_OF_SECOND);
         Assertions.assertTrue(nowInMilis - save < 1000);
 
         Userok userok2 = new Userok();
