@@ -1,7 +1,6 @@
 package ru.rest.demo.rest;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
@@ -20,8 +19,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 
-@Api(description = "Работа с пользователями")
-//@Tag(name = "Users", description = "Работа с пользователями")
+@Tag(name = "Пользователи (user-controller)", description = "Работа с пользователями")
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
@@ -34,7 +32,7 @@ public class UserController {
         return "hello";
     }
 
-    @ApiOperation("Получить список пользователей")
+    @Operation(summary = "Получить список пользователей")
     @GetMapping()
     public Page<Userok> getAll(@RequestParam(required = false) String name,
                                @RequestParam(required = false) LocalDate date,
@@ -48,22 +46,20 @@ public class UserController {
         return repository.findAll(pageable);
     }
 
-    @ApiOperation("Создать пользователя")
+    @Operation(summary = "Создать пользователя")
     @PostMapping()
     public Userok create(@RequestBody Userok userok) {
         return repository.save(userok);
     }
 
-    @ApiOperation("Удалить пользователя")
-    //@Operation(summary = "Удалить пользователя", tags = "user")
+    @Operation(summary = "Удалить пользователя")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         Userok byId = getById(id);
         repository.delete(byId);
     }
 
-    @ApiOperation("Частично обновить пользователя")
-    //@Operation(summary = "Частично обновить пользователя", tags = "user")
+    @Operation(summary = "Частично обновить пользователя")
     @PatchMapping("/{id}")
     public Userok update(@PathVariable UUID id, @RequestBody Userok patch) {
         Userok userok = getById(id);
@@ -71,8 +67,7 @@ public class UserController {
         return repository.save(userok);
     }
 
-    @ApiOperation("Получить пользователя")
-    //@Operation(summary = "Получить пользователя", tags = "user")
+    @Operation(summary = "Получить пользователя")
     @GetMapping("/{id}")
     public Userok getById(@PathVariable UUID id) {
         return repository.findById(id).orElseThrow(EntityNotFoundException::new);
