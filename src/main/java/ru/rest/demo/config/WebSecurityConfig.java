@@ -1,13 +1,21 @@
 package ru.rest.demo.config;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -25,12 +33,35 @@ public class WebSecurityConfig {
                         .anyRequest().authenticated()
                 );
         http.httpBasic().authenticationEntryPoint(basicAuthenticationPoint);
+        //http.passwordManagement()
 
         return http.build();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("admin").password("admin").roles("USER");
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication().passwordEncoder(NoOpPasswordEncoder.getInstance()).withUser("admin").password("admin").roles("USER");
+//        //auth.userDetailsService()
+//    }
+
+    @Component
+    public static class BasicAuthenticationPoint extends BasicAuthenticationEntryPoint {
+
+        @Override
+        public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authEx)
+                throws IOException {
+            response.addHeader("WWW-Authenticate", "Basic realm=" + getRealmName());
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            PrintWriter writer = response.getWriter();
+            writer.println("HTTP Status 401 - " + authEx.getMessage());
+        }
+
+        @Override
+        public void afterPropertiesSet() {
+            setRealmName("DefaultRealmName");
+            super.afterPropertiesSet();
+        }
+
+
     }
 }

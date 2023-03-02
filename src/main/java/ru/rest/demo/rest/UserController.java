@@ -64,6 +64,10 @@ public class UserController {
     public Userok update(@PathVariable UUID id, @RequestBody Userok patch) {
         Userok userok = getById(id);
         userok.setName(patch.getName());
+        userok.setEmail(patch.getEmail());
+        userok.setGender(patch.getGender());
+        userok.setPassword(patch.getPassword());
+        userok.setPhone(patch.getPhone());
         return repository.save(userok);
     }
 
