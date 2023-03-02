@@ -31,7 +31,7 @@ import org.springframework.core.PriorityOrdered;
 //}
 
 @Configuration
-public class CustomPostProcessor implements BeanDefinitionRegistryPostProcessor {
+public class CustomPostProcessor implements BeanDefinitionRegistryPostProcessor, PriorityOrdered {
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         BeanDefinition someConfig = new RootBeanDefinition("ru.rest.demo.config.FlywayConfig");
@@ -41,5 +41,9 @@ public class CustomPostProcessor implements BeanDefinitionRegistryPostProcessor 
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 
+    }
+    @Override
+    public int getOrder() {
+        return Ordered.HIGHEST_PRECEDENCE;
     }
 }
