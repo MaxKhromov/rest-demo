@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -26,9 +27,11 @@ public class Userok implements UserDetails {
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid4")
     UUID id;
-
+    @NotBlank(message = "Name is mandatory")
     String name;
+    @NotBlank(message = "Email is mandatory")
     String email;
+    @NotBlank(message = "Password is mandatory")
     String password;
     Gender gender;
     String phone;
