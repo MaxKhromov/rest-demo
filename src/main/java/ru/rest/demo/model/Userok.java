@@ -4,7 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,6 +18,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -27,16 +31,24 @@ public class Userok implements UserDetails {
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid4")
     UUID id;
-    @NotBlank(message = "Name is mandatory")
+
+    @NotBlank
     String name;
-    @NotBlank(message = "Email is mandatory")
+
+    @NotBlank
+    @Email
     String email;
-    @NotBlank(message = "Password is mandatory")
+
+    @NotBlank
     String password;
+
     Gender gender;
+
+    @Pattern(regexp="\\d{10,13}")
     String phone;
 
     LocalDateTime createdAt;
+
     LocalDateTime modifiedAt;
 
 
