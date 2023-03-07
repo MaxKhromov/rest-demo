@@ -5,15 +5,21 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.rest.demo.model.Userok;
 import ru.rest.demo.repo.UserRepository;
+import ru.rest.demo.rest.exception.CustomValidationException;
 
+import javax.naming.Binding;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -49,7 +55,11 @@ public class UserController {
 
     @Operation(summary = "Создать пользователя")
     @PostMapping()
-    public Userok create(@RequestBody Userok userok) {
+    public Userok create(@RequestBody @Validated Userok userok, BindingResult errors) {
+        //this is the validation barrier
+        if (errors.hasErrors()) {
+            throw new CustomValidationException(errors);
+        }
         return repository.save(userok);
     }
 
