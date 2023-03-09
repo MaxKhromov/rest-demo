@@ -9,7 +9,7 @@ import java.util.List;
 public class ErrorMessage {
     String code;
     String message;
-    List<Object> params;
+    List<Object> params = new ArrayList<>();
     List<ErrorMessage> children = new ArrayList<>();
 
     public void addParam(String msg){

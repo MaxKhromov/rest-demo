@@ -6,7 +6,8 @@ import lombok.Data;
 
 public enum ErrorMessageEnum {
     VALIDATION_ERROR("400","Ошибка входных данных"),
-    PARAM_MISSING("401", "Отсутствует обязательный параметр");
+    PARAM_MISSING("401", "Отсутствует обязательный параметр"),
+    UNEXPECTED_ERROR("500", "Возникла непредвиденная ошибка");
 
     private String code;
 
