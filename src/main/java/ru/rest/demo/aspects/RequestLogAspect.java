@@ -7,6 +7,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -15,7 +16,7 @@ import java.lang.reflect.Method;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-
+@Component
 @Slf4j
 @Aspect
 public class RequestLogAspect {
