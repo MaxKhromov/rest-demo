@@ -64,11 +64,12 @@ public class RequestLogAspect {
             return value;
 
         } catch (Exception exception) {
-            log.info("Failed execution of {} {} {} (running {} ns)",
+            log.warn("Failed execution of {} {} {} (running {} ns)",
                     request.getMethod(),
                     request.getRequestURI(),
                     request.getRemoteAddr(),
                     stopWatch.getTotalTimeNanos());
+            log.warn(exception.getMessage());
             throw exception;
         }
     }

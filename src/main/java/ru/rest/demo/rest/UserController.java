@@ -3,7 +3,6 @@ package ru.rest.demo.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,12 +12,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.rest.demo.model.Userok;
-import ru.rest.demo.rest.exception.CustomValidationException;
-import ru.rest.demo.service.UserService;
+import ru.rest.demo.service.UserokService;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Objects;
 import java.util.UUID;
 
 
@@ -28,52 +23,36 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
-    private final UserService repository;
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
-    }
+    private final UserokService userokService;
 
     @Operation(summary = "Получить список пользователей")
     @GetMapping()
     public Page<Userok> getAll(@RequestParam(required = false) String search,
                                @PageableDefault() Pageable pageable) {
-        return repository.findAll(search, pageable);
+        return userokService.findAll(search, pageable);
     }
 
     @Operation(summary = "Создать пользователя")
     @PostMapping()
     public Userok create(@RequestBody @Validated Userok userok, BindingResult errors) {
-        //this is the validation barrier
-        if (errors.hasErrors()) {
-            throw new CustomValidationException(errors);
-        }
-        return repository.save(userok);
+        return userokService.save(userok, errors);
     }
 
     @Operation(summary = "Удалить пользователя")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
-        Userok byId = getById(id);
-        repository.delete(byId);
+        userokService.deleteById(id);
     }
 
     @Operation(summary = "Частично обновить пользователя")
     @PatchMapping("/{id}")
-    public Userok update(@PathVariable UUID id, @RequestBody Userok patch) {
-        Userok userok = getById(id);
-        userok.setName(patch.getName());
-        userok.setEmail(patch.getEmail());
-        userok.setGender(patch.getGender());
-        userok.setPassword(patch.getPassword());
-        userok.setPhone(patch.getPhone());
-        return repository.save(userok);
+    public Userok update(@PathVariable UUID id, @RequestBody @Validated Userok patch, BindingResult errors) {
+        return userokService.update(id, patch, errors);
     }
 
     @Operation(summary = "Получить пользователя")
     @GetMapping("/{id}")
     public Userok getById(@PathVariable UUID id) {
-        return repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return userokService.findById(id);
     }
 }

@@ -8,7 +8,8 @@ public enum ErrorMessageEnum {
     VALIDATION_ERROR("400","Ошибка входных данных"),
     PARAM_MISSING("401", "Отсутствует обязательный параметр"),
     PARAM_WRONG_FORMAT("402", "Неверный формат передаваемого значения"),
-    UNEXPECTED_ERROR("500", "Возникла непредвиденная ошибка");
+    UNEXPECTED_ERROR("500", "Возникла непредвиденная ошибка"),
+    ENTITY_NOT_FOUND("300", "Сущность '%s' с идентификатором '%s' не найдена");
 
     private String code;
 

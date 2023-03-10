@@ -16,7 +16,5 @@ public interface UserRepository extends PagingAndSortingRepository<Userok, UUID>
 
     Page<Userok> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
 
-    Page<Userok> findAllById(Iterable<UUID> uuids, Pageable pageable);
-
     Userok findByEmail(String email);
 }

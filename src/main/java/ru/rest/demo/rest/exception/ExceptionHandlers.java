@@ -1,5 +1,7 @@
 package ru.rest.demo.rest.exception;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.FetchNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -8,13 +10,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ExceptionHandlers extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler
+    @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorModel> handle(Exception ex) {
-        if(ex instanceof ExceptionBase) {
-            ExceptionBase newEx = (ExceptionBase) ex;
+        if(ex instanceof ExceptionBase castedEx) {
             return ResponseEntity.badRequest()
-                    .body(newEx.mapToError());
-        } else {
+                    .body(castedEx.mapToError());
+        }
+        if (ex instanceof FetchNotFoundException castedEx){
+            return ResponseEntity.badRequest()
+                    .body(new CustomEntityNotFoundException(castedEx).mapToError());
+        }else {
             return ResponseEntity.badRequest()
                     .body(new CustomUnexpectedException().mapToError());
         }
