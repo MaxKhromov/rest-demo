@@ -15,4 +15,8 @@ public class ErrorMessage {
     public void addParam(String msg){
         this.params.add(msg);
     }
+
+    public void addAllParams(List<Object> msg){
+        this.params.addAll(msg);
+    }
 }

@@ -4,11 +4,8 @@ package ru.rest.demo.rest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.validation.Valid;
-import jakarta.validation.ValidationException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,10 +13,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.rest.demo.model.Userok;
-import ru.rest.demo.repo.UserRepository;
 import ru.rest.demo.rest.exception.CustomValidationException;
+import ru.rest.demo.service.UserService;
 
-import javax.naming.Binding;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Objects;
@@ -32,7 +28,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
     @Autowired
-    private final UserRepository repository;
+    private final UserService repository;
 
     @GetMapping("/hello")
     public String hello() {
@@ -41,16 +37,9 @@ public class UserController {
 
     @Operation(summary = "Получить список пользователей")
     @GetMapping()
-    public Page<Userok> getAll(@RequestParam(required = false) String name,
-                               @RequestParam(required = false) LocalDate date,
+    public Page<Userok> getAll(@RequestParam(required = false) String search,
                                @PageableDefault() Pageable pageable) {
-        if (Objects.nonNull(name)) {
-            return repository.findAllByName(name, pageable);
-        }
-        if (Objects.nonNull(date)) {
-            return repository.findAllByCreatedAtBetween(date.atTime(LocalTime.MIN), date.atTime(LocalTime.MAX), pageable);
-        }
-        return repository.findAll(pageable);
+        return repository.findAll(search, pageable);
     }
 
     @Operation(summary = "Создать пользователя")

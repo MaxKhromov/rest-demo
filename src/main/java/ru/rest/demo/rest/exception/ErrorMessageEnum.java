@@ -7,6 +7,7 @@ import lombok.Data;
 public enum ErrorMessageEnum {
     VALIDATION_ERROR("400","Ошибка входных данных"),
     PARAM_MISSING("401", "Отсутствует обязательный параметр"),
+    PARAM_WRONG_FORMAT("402", "Неверный формат передаваемого значения"),
     UNEXPECTED_ERROR("500", "Возникла непредвиденная ошибка");
 
     private String code;
