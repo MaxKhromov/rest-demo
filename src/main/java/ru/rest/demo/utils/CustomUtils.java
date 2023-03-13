@@ -8,7 +8,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class CustomUtils {
-    public static <E, K> Map<K, List<E>> groupBy(List<E> list, Function<E, K> keyFunction) {
+    public static <E, K> Map<K, List<E>> groupListBy(List<E> list, Function<E, K> keyFunction) {
         return Optional.ofNullable(list)
                 .orElseGet(ArrayList::new)
                 .stream()

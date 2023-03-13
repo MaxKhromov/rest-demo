@@ -9,7 +9,7 @@ public enum ErrorMessageEnum {
     PARAM_MISSING("401", "Отсутствует обязательный параметр"),
     PARAM_WRONG_FORMAT("402", "Неверный формат передаваемого значения"),
     UNEXPECTED_ERROR("500", "Возникла непредвиденная ошибка"),
-    ENTITY_NOT_FOUND("300", "Сущность '%s' с идентификатором '%s' не найдена");
+    ENTITY_NOT_FOUND("300", "Объект '%s' с идентификатором '%s' не найден");
 
     private String code;
 

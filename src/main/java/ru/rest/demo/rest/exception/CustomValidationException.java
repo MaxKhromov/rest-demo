@@ -56,7 +56,7 @@ public class CustomValidationException extends RuntimeException implements Excep
         parentError.setCode(validationError.getCode());
         parentError.setMessage(validationError.getMessage());
 
-        Map<String, List<ObjectError>> errorsGroupedByType = CustomUtils.groupBy(this.errors.getAllErrors(), objectError ->
+        Map<String, List<ObjectError>> errorsGroupedByType = CustomUtils.groupListBy(this.errors.getAllErrors(), objectError ->
                 Arrays.asList(Objects.requireNonNull(objectError.getCodes())).get(objectError.getCodes().length - 1)
         );
 

@@ -1,13 +1,11 @@
 package ru.rest.demo.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.PreUpdate;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -18,8 +16,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.math.BigInteger;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 import java.util.*;
 
 @Getter
@@ -27,9 +24,12 @@ import java.util.*;
 @ToString
 @RequiredArgsConstructor
 @Entity
-public class Userok implements UserDetails {
+public class Userok extends EntityBase<UUID> implements UserDetails {
+
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid4")
+    @GeneratedValue
+    //UUID id = getId();
     UUID id;
 
     @NotBlank
@@ -44,33 +44,15 @@ public class Userok implements UserDetails {
 
     Gender gender;
 
-    @Pattern(regexp="\\d{10,13}")
+    @Pattern(regexp = "\\d{10,13}")
     String phone;
-
-    LocalDateTime createdAt;
-
-    LocalDateTime modifiedAt;
-
-
-    @PrePersist
-    public void prePersist() {
-        id = UUID.randomUUID();
-        LocalDateTime now = LocalDateTime.now();
-        createdAt = now;
-        modifiedAt = now;
-    }
-
-    @PreUpdate
-    public void preUpdate() {
-        modifiedAt = LocalDateTime.now();
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
         Userok userok = (Userok) o;
-        return id != null && Objects.equals(id, userok.id);
+        return getId() != null && Objects.equals(getId(), userok.getId());
     }
 
     @Override
@@ -109,4 +91,6 @@ public class Userok implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 }

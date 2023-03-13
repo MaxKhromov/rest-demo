@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Repository
-public interface UserRepository extends PagingAndSortingRepository<Userok, UUID>, CrudRepository<Userok, UUID> {
+public interface UserRepository extends RepositoryBase<Userok, UUID> {
     Page<Userok> findAllByName(String name, Pageable pageable);
 
     Page<Userok> findAllByCreatedAtBetween(LocalDateTime from, LocalDateTime to, Pageable pageable);
