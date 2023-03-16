@@ -3,8 +3,10 @@ package ru.rest.demo.service;
 
 import jakarta.annotation.Nullable;
 import org.hibernate.FetchNotFoundException;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import ru.rest.demo.dto.CustomPage;
@@ -36,8 +38,8 @@ public interface CrudServiceBase<T extends EntityBase<ID>, ID extends Serializab
         return getRepository().findById(id).orElseThrow(() -> new FetchNotFoundException(getGenericInterfaceType().getSimpleName(), id));
     }
 
-    default CustomPage<T> findAll(MultiValueMap<String, String> search, Pageable pageable) {
-        return new CustomPage<>(getRepository().findAll(pageable));
+    default CustomPage<T> findAll(Specification<T> specs, Pageable pageable) {
+        return new CustomPage<>(getRepository().findAll(specs, pageable));
     }
 
     default void deleteById(ID id) {

@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.rest.demo.dto.CustomPage;
 import ru.rest.demo.model.Userok;
+import ru.rest.demo.rest.filters.UserokSpecs;
 import ru.rest.demo.service.UserokService;
 
 import java.util.UUID;
@@ -29,9 +30,9 @@ public class UserController {
 
     @Operation(summary = "Получить список пользователей")
     @GetMapping()
-    public CustomPage<Userok> getAll(@RequestParam(required = false) MultiValueMap<String, String> filters,
+    public CustomPage<Userok> getAll(UserokSpecs specs,
                                      @PageableDefault() Pageable pageable) {
-        return userokService.findAll(filters, pageable);
+        return userokService.findAll(specs, pageable);
     }
 
     @Operation(summary = "Создать пользователя")

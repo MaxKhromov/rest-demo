@@ -11,7 +11,6 @@ import ru.rest.demo.model.Userok;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Component
 @Repository
 public interface UserRepository extends RepositoryBase<Userok, UUID> {
     Page<Userok> findAllByName(String name, Pageable pageable);
