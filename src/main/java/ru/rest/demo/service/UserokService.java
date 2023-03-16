@@ -44,7 +44,7 @@ public class UserokService implements CrudServiceBase<Userok, UUID> {
         userok.setName(patch.getName());
         userok.setEmail(patch.getEmail());
         userok.setGender(patch.getGender());
-        userok.setPassword(patch.getPassword());
+        userok.setPassword(passwordEncoder.encode(patch.getPassword()));
         userok.setPhone(patch.getPhone());
         return save(userok, errors);
     }
