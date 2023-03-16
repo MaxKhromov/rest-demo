@@ -1,9 +1,12 @@
 package ru.rest.demo.service;
 
+import jakarta.annotation.Nullable;
+import org.apache.catalina.User;
 import org.hibernate.FetchNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import ru.rest.demo.model.Userok;
@@ -18,9 +21,21 @@ public class UserokService implements CrudServiceBase<Userok, UUID> {
     @Autowired
     UserRepository repository;
 
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @Override
     public UserRepository getRepository() {
         return repository;
+    }
+
+    @Override
+    public Userok save(Userok userok, @Nullable BindingResult errors){
+        if (errors.hasErrors()) {
+            throw new CustomValidationException(errors);
+        }
+        userok.setPassword(passwordEncoder.encode(userok.getPassword()));
+        return getRepository().save(userok);
     }
 
     @Override

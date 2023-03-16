@@ -11,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.rest.demo.dto.CustomPage;
 import ru.rest.demo.model.Userok;
 import ru.rest.demo.service.UserokService;
 
@@ -27,8 +28,8 @@ public class UserController {
 
     @Operation(summary = "Получить список пользователей")
     @GetMapping()
-    public Page<Userok> getAll(@RequestParam(required = false) String search,
-                               @PageableDefault() Pageable pageable) {
+    public CustomPage<Userok> getAll(@RequestParam(required = false) String search,
+                                     @PageableDefault() Pageable pageable) {
         return userokService.findAll(search, pageable);
     }
 
