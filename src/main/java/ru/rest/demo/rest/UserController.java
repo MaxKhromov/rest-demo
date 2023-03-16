@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +29,9 @@ public class UserController {
 
     @Operation(summary = "Получить список пользователей")
     @GetMapping()
-    public CustomPage<Userok> getAll(@RequestParam(required = false) String search,
+    public CustomPage<Userok> getAll(@RequestParam(required = false) MultiValueMap<String, String> filters,
                                      @PageableDefault() Pageable pageable) {
-        return userokService.findAll(search, pageable);
+        return userokService.findAll(filters, pageable);
     }
 
     @Operation(summary = "Создать пользователя")
