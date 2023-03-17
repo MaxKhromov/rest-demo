@@ -1,5 +1,6 @@
 package ru.rest.demo.rest.exception;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -10,6 +11,15 @@ public enum ErrorMessageEnum {
     PARAM_WRONG_FORMAT("402", "Неверный формат передаваемого значения"),
     UNEXPECTED_ERROR("500", "Возникла непредвиденная ошибка"),
     ENTITY_NOT_FOUND("300", "Объект '%s' с идентификатором '%s' не найден");
+
+    /*
+    @ApiResponses(value = {
+    @ApiResponse(responseCode = "500", description = "code = '400' message = 'Ошибка входных данных'"),
+    @ApiResponse(responseCode = "500", description = "code = '401' message = 'Отсутствует обязательный параметр'"),
+    @ApiResponse(responseCode = "500", description = "code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'"),
+    @ApiResponse(responseCode = "500", description = "code = '402' message = 'Неверный формат передаваемого значения'"),
+    @ApiResponse(responseCode = "500", description = "code = '500' message = 'Возникла непредвиденная ошибка'")
+    })*/
 
     private String code;
 

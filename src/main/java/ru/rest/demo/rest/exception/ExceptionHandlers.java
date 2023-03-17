@@ -14,15 +14,15 @@ public class ExceptionHandlers extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorModel> handle(Exception ex) {
         if(ex instanceof ExceptionBase) {
             ExceptionBase castedEx = (ExceptionBase) ex;
-            return ResponseEntity.badRequest()
+            return ResponseEntity.internalServerError()
                     .body(castedEx.mapToError());
         }
         if (ex instanceof FetchNotFoundException){
             FetchNotFoundException castedEx = (FetchNotFoundException) ex;
-            return ResponseEntity.badRequest()
+            return ResponseEntity.internalServerError()
                     .body(new CustomEntityNotFoundException(castedEx).mapToError());
         }else {
-            return ResponseEntity.badRequest()
+            return ResponseEntity.internalServerError()
                     .body(new CustomUnexpectedException().mapToError());
         }
     }

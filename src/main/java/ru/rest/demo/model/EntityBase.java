@@ -1,5 +1,6 @@
 package ru.rest.demo.model;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -11,10 +12,12 @@ import java.util.UUID;
 
 @Data
 @MappedSuperclass
-public abstract class EntityBase<ID extends Serializable>{
+public abstract class EntityBase<ID extends Serializable> {
 
-//    private ID id;
+    //    private ID id;
+    @Schema(description = "Дата и время создания объекта")
     private LocalDateTime createdAt;
+    @Schema(description = "Дата и время последнего изменения объекта")
     private LocalDateTime modifiedAt;
 
 //    @Id

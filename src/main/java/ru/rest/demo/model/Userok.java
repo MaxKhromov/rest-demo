@@ -1,5 +1,8 @@
 package ru.rest.demo.model;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -12,6 +15,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.context.annotation.Description;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,27 +29,33 @@ import java.util.*;
 @ToString
 @RequiredArgsConstructor
 @Entity
+@Schema(description = "Пользователь")
 public class Userok extends EntityBase<UUID> implements UserDetails {
 
     @Id
     @GenericGenerator(name = "uuid", strategy = "uuid4")
     @GeneratedValue
-    //UUID id = getId();
+    @Schema(description = "Уникальный идентификатор")
     UUID id;
 
     @NotBlank
+    @Schema(description = "ФИО")
     String name;
 
     @NotBlank
     @Email
+    @Schema(description = "Электронная почта")
     String email;
 
     @NotBlank
+    @Schema(description = "Пароль")
     String password;
 
+    @Schema(description = "Пол")
     Gender gender;
 
     @Pattern(regexp = "\\d{10,13}")
+    @Schema(description = "Телефон")
     String phone;
 
     @Override
