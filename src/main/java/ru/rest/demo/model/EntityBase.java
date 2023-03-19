@@ -19,11 +19,6 @@ public abstract class EntityBase<ID extends Serializable> {
     @Schema(description = "Дата и время последнего изменения объекта")
     private LocalDateTime modifiedAt;
 
-//    @Id
-//    public ID getId() {
-//        return id;
-//    }
-
     @PrePersist
     public void prePersist() {
         LocalDateTime now = LocalDateTime.now();

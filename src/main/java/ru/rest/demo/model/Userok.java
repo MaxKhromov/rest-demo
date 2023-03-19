@@ -1,12 +1,7 @@
 package ru.rest.demo.model;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -16,13 +11,10 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.context.annotation.Description;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.io.Serializable;
 import java.util.*;
 
 @Getter
@@ -53,11 +45,15 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
     String password;
 
     @Schema(description = "Пол", example = "MALE")
-    Gender gender;
+    GenderEnum gender;
 
     @Pattern(regexp = "\\d{10,13}")
     @Schema(description = "Телефон", example = "89171240734")
     String phone;
+
+    @OneToMany
+    @Schema(description = "Роли пользователя")
+    private Set<Role> roles;
 
     @Override
     public boolean equals(Object o) {

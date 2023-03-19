@@ -5,8 +5,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
-import ru.rest.demo.model.Gender;
+import ru.rest.demo.model.GenderEnum;
+import ru.rest.demo.model.Role;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -28,9 +30,12 @@ public class UserDto implements DtoBase {
     String password;
 
     @Schema(description = "Пол", example = "MALE")
-    Gender gender;
+    GenderEnum genderEnum;
 
     @Pattern(regexp = "\\d{10,13}")
     @Schema(description = "Телефон", example = "89171240734")
     String phone;
+
+    @Schema(description = "Роли пользователя")
+    private Set<Role> roles;
 }

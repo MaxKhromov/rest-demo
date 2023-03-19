@@ -1,16 +1,11 @@
 package ru.rest.demo.service;
 
 import jakarta.annotation.Nullable;
-import org.apache.catalina.User;
-import org.hibernate.FetchNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import ru.rest.demo.model.Userok;
-import ru.rest.demo.repo.RepositoryBase;
 import ru.rest.demo.repo.UserRepository;
 import ru.rest.demo.rest.exception.CustomValidationException;
 

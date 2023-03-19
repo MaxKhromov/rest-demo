@@ -1,6 +1,6 @@
 package ru.rest.demo.model;
 
-public enum Gender {
+public enum GenderEnum {
     MALE,
     FEMALE,
 }
