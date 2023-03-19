@@ -14,7 +14,6 @@ import java.util.UUID;
 @MappedSuperclass
 public abstract class EntityBase<ID extends Serializable> {
 
-    //    private ID id;
     @Schema(description = "Дата и время создания объекта")
     private LocalDateTime createdAt;
     @Schema(description = "Дата и время последнего изменения объекта")
@@ -27,11 +26,6 @@ public abstract class EntityBase<ID extends Serializable> {
 
     @PrePersist
     public void prePersist() {
-//        if(getGenericInterfaceType().getSimpleName().equals("UUID")){
-//            setId((ID) UUID.randomUUID());
-//        } else {
-//            setId();
-//        }
         LocalDateTime now = LocalDateTime.now();
         this.createdAt = now;
         this.modifiedAt = now;
@@ -42,12 +36,4 @@ public abstract class EntityBase<ID extends Serializable> {
         this.modifiedAt = LocalDateTime.now();
     }
 
-//    private Class<?> getGenericInterfaceType(){
-//        Class<?> clazz = getClass();
-//        ParameterizedType parameterizedType = (ParameterizedType) clazz.getGenericInterfaces()[0];
-//        Type[] typeArguments = parameterizedType.getActualTypeArguments();
-//        return (Class<?>) typeArguments[0];
-//    }
-
-//    public static abstract Class<?> getCurrentClass();
 }
