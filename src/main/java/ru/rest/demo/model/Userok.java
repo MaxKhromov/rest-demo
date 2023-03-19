@@ -73,7 +73,6 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
     }
 
     @Override
-    @Schema(hidden = true)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("USER"));
@@ -81,31 +80,26 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
     }
 
     @Override
-    @Schema(hidden = true)
     public String getUsername() {
         return this.email;
     }
 
     @Override
-    @Schema(hidden = true)
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
-    @Schema(hidden = true)
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
-    @Schema(hidden = true)
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
-    @Schema(hidden = true)
     public boolean isEnabled() {
         return true;
     }

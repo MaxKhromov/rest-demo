@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -16,20 +17,27 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.rest.demo.dto.CustomPage;
+import ru.rest.demo.dto.DefaultDtoMapper;
+import ru.rest.demo.dto.UserDto;
 import ru.rest.demo.model.Userok;
 import ru.rest.demo.rest.filters.UserokSpecs;
 import ru.rest.demo.service.UserokService;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Tag(name = "Пользователи (user-controller)", description = "Работа с пользователями")
 @RestController
 @RequestMapping("users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements DefaultDtoMapper<UserDto, Userok> {
     @Autowired
     private final UserokService userokService;
+
+    @Autowired
+    private final ModelMapper modelMapper;
 
     @Operation(summary = "Получить список пользователей")
     @ApiResponses(value = {
@@ -39,8 +47,7 @@ public class UserController {
                             """)
     })
     @GetMapping()
-
-    public CustomPage<Userok> getAll(@Nullable @Parameter(
+    public CustomPage<UserDto> getAll(@Nullable @Parameter(
             name = "filter",
             description = """
                     Параметры фильтрации. Возможные значения и критерии поиска: \t
@@ -59,7 +66,9 @@ public class UserController {
                     """)
                                      UserokSpecs filter,
                                      @PageableDefault() @ParameterObject @Nullable Pageable pageable) {
-        return userokService.findAll(filter, pageable);
+        CustomPage<Userok> result = userokService.findAll(filter, pageable);
+        List<UserDto> resultDtoContent = result.getContent().stream().map(this::convertToDto).toList();
+        return new CustomPage<>(resultDtoContent, result.getPageable());
     }
 
     @Operation(summary = "Получить пользователя")
@@ -71,8 +80,8 @@ public class UserController {
                             """)
     })
     @GetMapping("/{id}")
-    public Userok getById(@PathVariable UUID id) {
-        return userokService.findById(id);
+    public UserDto getById(@PathVariable UUID id) {
+        return convertToDto(userokService.findById(id));
     }
 
     @Operation(summary = "Создать пользователя")
@@ -86,8 +95,9 @@ public class UserController {
                             """)
     })
     @PostMapping()
-    public Userok create(@RequestBody @Validated Userok userok, BindingResult errors) {
-        return userokService.save(userok, errors);
+    public UserDto create(@RequestBody @Validated UserDto userDto, BindingResult errors) {
+        Userok userok = convertToEntity(userDto);
+        return convertToDto(userokService.save(userok, errors));
     }
 
     @Operation(summary = "Обновить пользователя")
@@ -102,8 +112,9 @@ public class UserController {
                             """)
     })
     @PutMapping("/{id}")
-    public Userok update(@PathVariable UUID id, @RequestBody @Validated Userok patch, BindingResult errors) {
-        return userokService.update(id, patch, errors);
+    public UserDto update(@PathVariable UUID id, @RequestBody @Validated UserDto patch, BindingResult errors) {
+        Userok userokPatch = convertToEntity(patch);
+        return convertToDto(userokService.update(id, userokPatch, errors));
     }
 
     @Operation(summary = "Удалить пользователя")
@@ -117,5 +128,10 @@ public class UserController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable UUID id) {
         userokService.deleteById(id);
+    }
+
+    @Override
+    public ModelMapper getModelMapper() {
+        return this.modelMapper;
     }
 }
