@@ -38,7 +38,9 @@ public class UserController {
 
     @Operation(summary = "Получить список пользователей")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "code = '500' message = 'Возникла непредвиденная ошибка'")
+            @ApiResponse(responseCode = "500", description =
+                    """
+                            code = '500' message = 'Возникла непредвиденная ошибка'""")
     })
     @GetMapping()
     public CustomPage<Userok> getAll(@Nullable UserokSpecs filter,
@@ -46,49 +48,56 @@ public class UserController {
         return userokService.findAll(filter, pageable);
     }
 
+    @Operation(summary = "Получить пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description =
+                    """
+                            code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'\t
+                            code = '500' message = 'Возникла непредвиденная ошибка'""")
+    })
+    @GetMapping("/{id}")
+    public Userok getById(@PathVariable UUID id) {
+        return userokService.findById(id);
+    }
+
     @Operation(summary = "Создать пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'"),
-            @ApiResponse(responseCode = "500", description = "code = '400' message = 'Ошибка входных данных'"),
-            @ApiResponse(responseCode = "500", description = "code = '401' message = 'Отсутствует обязательный параметр'"),
-            @ApiResponse(responseCode = "500", description = "code = '402' message = 'Неверный формат передаваемого значения'"),
-            @ApiResponse(responseCode = "500", description = "code = '500' message = 'Возникла непредвиденная ошибка'")
+            @ApiResponse(responseCode = "500", description =
+                    """
+                            code = '400' message = 'Ошибка входных данных'\t
+                            code = '401' message = 'Отсутствует обязательный параметр'\t
+                            code = '402' message = 'Неверный формат передаваемого значения'\t
+                            code = '500' message = 'Возникла непредвиденная ошибка'""")
     })
     @PostMapping()
     public Userok create(@RequestBody @Validated Userok userok, BindingResult errors) {
         return userokService.save(userok, errors);
     }
 
-    @Operation(summary = "Удалить пользователя")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'"),
-            @ApiResponse(responseCode = "500", description = "code = '500' message = 'Возникла непредвиденная ошибка'")
-    })
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable UUID id) {
-        userokService.deleteById(id);
-    }
-
     @Operation(summary = "Частично обновить пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'"),
-            @ApiResponse(responseCode = "500", description = "code = '400' message = 'Ошибка входных данных'"),
-            @ApiResponse(responseCode = "500", description = "code = '401' message = 'Отсутствует обязательный параметр'"),
-            @ApiResponse(responseCode = "500", description = "code = '402' message = 'Неверный формат передаваемого значения'"),
-            @ApiResponse(responseCode = "500", description = "code = '500' message = 'Возникла непредвиденная ошибка'")
+            @ApiResponse(responseCode = "500", description =
+                    """
+                            code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'\t
+                            code = '400' message = 'Ошибка входных данных'\t
+                            code = '401' message = 'Отсутствует обязательный параметр'\t
+                            code = '402' message = 'Неверный формат передаваемого значения'\t
+                            code = '500' message = 'Возникла непредвиденная ошибка'""")
     })
     @PutMapping("/{id}")
     public Userok update(@PathVariable UUID id, @RequestBody @Validated Userok patch, BindingResult errors) {
         return userokService.update(id, patch, errors);
     }
 
-    @Operation(summary = "Получить пользователя")
+    @Operation(summary = "Удалить пользователя")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "500", description = "code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'"),
-            @ApiResponse(responseCode = "500", description = "code = '500' message = 'Возникла непредвиденная ошибка'")
+            @ApiResponse(responseCode = "500", description =
+                    """
+                            code = '300' message = 'Объект '%s' с идентификатором '%s' не найден'\t
+                            code = '500' message = 'Возникла непредвиденная ошибка'""")
     })
-    @GetMapping("/{id}")
-    public Userok getById(@PathVariable UUID id) {
-        return userokService.findById(id);
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable UUID id) {
+        userokService.deleteById(id);
     }
 }
