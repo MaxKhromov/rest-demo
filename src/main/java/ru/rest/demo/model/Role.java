@@ -1,10 +1,8 @@
 package ru.rest.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -34,5 +33,10 @@ public class Role extends EntityBase<Long>{
     @NotBlank
     @Schema(description = "Наименование роли", example = "Администратор")
     String description;
+
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
+    @Schema(description = "Пользователи с ролью")
+    private Set<Userok> users;
 
 }

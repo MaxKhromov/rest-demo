@@ -51,7 +51,7 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
     @Schema(description = "Телефон", example = "89171240734")
     String phone;
 
-    @OneToMany
+    @ManyToMany
     @Schema(description = "Роли пользователя")
     private Set<Role> roles;
 
