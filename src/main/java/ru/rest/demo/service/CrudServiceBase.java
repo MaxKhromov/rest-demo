@@ -18,6 +18,7 @@ import ru.rest.demo.rest.exception.CustomValidationException;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,8 +35,12 @@ public interface CrudServiceBase<T extends EntityBase<ID>, ID extends Serializab
 
     <S extends T> S update(ID id, S patch, @Nullable BindingResult errors);
 
-    default <S extends T> T findById(ID id) {
+    default T findById(ID id) {
         return getRepository().findById(id).orElseThrow(() -> new FetchNotFoundException(getGenericInterfaceType().getSimpleName(), id));
+    }
+
+    default List<T> findById(List<ID> id) {
+        return getRepository().findAllById(id);
     }
 
     default CustomPage<T> findAll(Specification<T> specs, Pageable pageable) {

@@ -33,10 +33,9 @@ import java.util.stream.Collectors;
 @RequestMapping("users")
 @RequiredArgsConstructor
 public class UserController implements DefaultDtoMapper<UserDto, Userok> {
-    @Autowired
+
     private final UserokService userokService;
 
-    @Autowired
     private final ModelMapper modelMapper;
 
     @Operation(summary = "Получить список пользователей")

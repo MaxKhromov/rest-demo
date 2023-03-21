@@ -1,5 +1,6 @@
 package ru.rest.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import lombok.Data;
 import ru.rest.demo.model.GenderEnum;
 import ru.rest.demo.model.Role;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -37,5 +39,10 @@ public class UserDto implements DtoBase {
     String phone;
 
     @Schema(description = "Роли пользователя")
-    private Set<Role> roles;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private List<Role> roles;
+
+    @Schema(description = "Идентификаторы ролей пользователя")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private List<Long> rolesIds;
 }
