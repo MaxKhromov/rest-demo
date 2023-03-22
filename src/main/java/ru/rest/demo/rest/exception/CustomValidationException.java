@@ -35,8 +35,7 @@ public class CustomValidationException extends RuntimeException implements Excep
     }
 
     private static String getValidationMessage(ObjectError error) {
-        if (error instanceof FieldError) {
-            FieldError fieldError = (FieldError) error;
+        if (error instanceof FieldError fieldError) {
             String className = fieldError.getObjectName();
             String property = fieldError.getField();
             Object invalidValue = fieldError.getRejectedValue();
@@ -48,97 +47,49 @@ public class CustomValidationException extends RuntimeException implements Excep
 
     @Override
     public ErrorModel mapToError() {
-        ErrorMessageEnum validationError = ErrorMessageEnum.VALIDATION_ERROR;
-        ErrorMessageEnum pramMissingError = ErrorMessageEnum.PARAM_MISSING;
-        ErrorMessageEnum pramFormatError = ErrorMessageEnum.PARAM_WRONG_FORMAT;
+        //Создание родительского сообщения об ошибке
+        ErrorMessage parentErrorMessage = new ErrorMessage(ErrorMessageEnum.VALIDATION_ERROR.getCode(), ErrorMessageEnum.VALIDATION_ERROR.getMessage());
 
-        ErrorMessage parentError = new ErrorMessage();
-        parentError.setCode(validationError.getCode());
-        parentError.setMessage(validationError.getMessage());
-
+        //Группировка сообщений (ObjectError) по типу аннотации параметра в Entity
         Map<String, List<ObjectError>> errorsGroupedByType = CustomUtils.groupListBy(this.errors.getAllErrors(), objectError ->
                 Arrays.asList(Objects.requireNonNull(objectError.getCodes())).get(objectError.getCodes().length - 1)
         );
 
-        List<ErrorMessage> children = new ArrayList<>();
-
+        //Создание сообщения об ошибке в зависимости от аннотации
         errorsGroupedByType.forEach((type, objectErrorList) -> {
             ErrorMessage message = new ErrorMessage();
             switch (type) {
                 case "Email", "Pattern" -> {
-                    message.setMessage(pramFormatError.getMessage());
-                    message.setCode(pramFormatError.getCode());
+                    message.setMessage(ErrorMessageEnum.PARAM_WRONG_FORMAT.getMessage());
+                    message.setCode(ErrorMessageEnum.PARAM_WRONG_FORMAT.getCode());
                     objectErrorList.forEach(er -> {
                         FieldError validationFieldError = (FieldError) er;
                         message.addParam(validationFieldError.getField());
                     });
                 }
                 default -> {
-                    message.setMessage(pramMissingError.getMessage());
-                    message.setCode(pramMissingError.getCode());
+                    message.setMessage(ErrorMessageEnum.PARAM_MISSING.getMessage());
+                    message.setCode(ErrorMessageEnum.PARAM_MISSING.getCode());
                     objectErrorList.forEach(er -> {
                         FieldError validationFieldError = (FieldError) er;
                         message.addParam(validationFieldError.getField());
                     });
                 }
             }
-            if (children.stream().noneMatch(errMsg -> errMsg.getCode().equals(message.getCode()))) {
-                children.add(message);
+
+            //Добавление в дочерние ошибки родительского сообщения, сообщения об ошибках по аннотациям
+            ErrorMessage existingErrorMessage = parentErrorMessage.children.stream()
+                    .findFirst()
+                    .filter(errMsg -> errMsg.getCode().equals(message.getCode()))
+                    .orElse(null);
+            if (ObjectUtils.isEmpty(existingErrorMessage)) {
+                parentErrorMessage.children.add(message);
             } else {
-                ErrorMessage existingErrorMessage = children.stream().findFirst().filter(errMsg -> errMsg.getCode().equals(message.getCode())).orElse(null);
-                if (ObjectUtils.isNotEmpty(existingErrorMessage))
-                    existingErrorMessage.addAllParams(message.getParams());
+                existingErrorMessage.addAllParams(message.getParams());
             }
         });
 
-        parentError.setChildren(children);
+        return new ErrorModel(List.of(parentErrorMessage));
 
-        ErrorModel error = new ErrorModel();
-        error.setErrors(List.of(parentError));
-        return error;
     }
-//    @Override
-//    public ErrorModel mapToError() {
-//        ErrorMessageEnum validationError = ErrorMessageEnum.VALIDATION_ERROR;
-//        ErrorMessageEnum paramMissingError = ErrorMessageEnum.PARAM_MISSING;
-//        ErrorMessageEnum paramFormatError = ErrorMessageEnum.PARAM_WRONG_FORMAT;
-//
-//        ErrorMessage parentError = new ErrorMessage(validationError.getCode(), validationError.getMessage());
-//
-//        Map<String, List<ObjectError>> errorsGroupedByType = CustomUtils.groupListBy(
-//                this.errors.getAllErrors(),
-//                objectError -> Arrays.asList(Objects.requireNonNull(objectError.getCodes())).get(objectError.getCodes().length - 1)
-//        );
-//
-//        Map<String, ErrorMessage> errorMessagesByType = errorsGroupedByType
-//                .entrySet()
-//                .stream()
-//                .collect(Collectors.toMap(
-//                        Map.Entry::getKey,
-//                        entry -> {
-//                            List<Object> params = entry.getValue().stream()
-//                                    .map(ObjectError::getCodes)
-//                                    .flatMap(Arrays::stream)
-//                                    .filter(code -> code.startsWith("NotNull") || code.startsWith("NotBlank"))
-//                                    .map(code -> code.split("\\.")[1])
-//                                    .collect(Collectors.toList());
-//
-//                            ErrorMessageEnum errorType = params.isEmpty() ? paramMissingError : paramFormatError;
-//
-//                            return new ErrorMessage(errorType.getCode(), errorType.getMessage(), params, null);
-//                        },
-//                        (message1, message2) -> {
-//                            message1.addAllParams(message2.getParams());
-//                            return message1;
-//                        }
-//                ));
-//
-//        List<ErrorMessage> children = new ArrayList<>(errorMessagesByType.values());
-//
-//        parentError.setChildren(children);
-//
-//        ErrorModel error = new ErrorModel();
-//        error.setErrors(List.of(parentError));
-//        return error;
-//    }
 }

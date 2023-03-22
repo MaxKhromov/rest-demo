@@ -17,14 +17,10 @@ public class CustomEntityNotFoundException extends RuntimeException implements E
 
     @Override
     public ErrorModel mapToError() {
-        ErrorMessageEnum unexpectedError = ErrorMessageEnum.ENTITY_NOT_FOUND;
 
-        ErrorMessage parentError = new ErrorMessage();
-        parentError.setCode(unexpectedError.getCode());
-        parentError.setMessage(String.format(unexpectedError.getMessage(), this.getEntityName(), this.getIdentifier()));
+        ErrorMessage parentErrorMessage = new ErrorMessage(ErrorMessageEnum.ENTITY_NOT_FOUND.getCode(),
+                String.format(ErrorMessageEnum.ENTITY_NOT_FOUND.getMessage(), this.getEntityName(), this.getIdentifier()));
 
-        ErrorModel error = new ErrorModel();
-        error.setErrors(List.of(parentError));
-        return error;
+        return new ErrorModel(List.of(parentErrorMessage));
     }
 }

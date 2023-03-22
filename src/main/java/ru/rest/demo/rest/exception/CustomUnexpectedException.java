@@ -11,14 +11,9 @@ public class CustomUnexpectedException extends RuntimeException implements Excep
 
     @Override
     public ErrorModel mapToError() {
-        ErrorMessageEnum unexpectedError = ErrorMessageEnum.UNEXPECTED_ERROR;
 
-        ErrorMessage parentError = new ErrorMessage();
-        parentError.setCode(unexpectedError.getCode());
-        parentError.setMessage(unexpectedError.getMessage());
+        ErrorMessage parentErrorMessage = new ErrorMessage(ErrorMessageEnum.UNEXPECTED_ERROR.getCode(), ErrorMessageEnum.UNEXPECTED_ERROR.getMessage());
 
-        ErrorModel error = new ErrorModel();
-        error.setErrors(List.of(parentError));
-        return error;
+        return new ErrorModel(List.of(parentErrorMessage));
     }
 }
