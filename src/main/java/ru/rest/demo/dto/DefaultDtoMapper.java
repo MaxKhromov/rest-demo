@@ -4,16 +4,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.util.CastUtils;
 import org.springframework.expression.ParseException;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-//T - DTO
-//S - Entity
+//<D> - DTO
+//<E> - Entity
 public interface DefaultDtoMapper<D extends DtoBase, E> {
 
     ModelMapper getModelMapper();
@@ -27,7 +22,7 @@ public interface DefaultDtoMapper<D extends DtoBase, E> {
         return CastUtils.cast(getModelMapper().map(dto, getGenericInterfaceType(1)));
     }
 
-    default Class<?> getGenericInterfaceType(int index){
+    default Class<?> getGenericInterfaceType(int index) {
         Class<?> clazz = getClass();
         ParameterizedType parameterizedType = (ParameterizedType) clazz.getGenericInterfaces()[0];
         Type[] typeArguments = parameterizedType.getActualTypeArguments();

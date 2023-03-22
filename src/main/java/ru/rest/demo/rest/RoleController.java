@@ -1,7 +1,6 @@
 package ru.rest.demo.rest;
 
 
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,19 +16,16 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.rest.demo.dto.CustomPage;
-import ru.rest.demo.dto.UserDto;
 import ru.rest.demo.model.Role;
 import ru.rest.demo.rest.filters.RoleSpecs;
 import ru.rest.demo.service.RoleService;
-
-import java.util.UUID;
 
 
 @Tag(name = "Роли (role-controller)", description = "Работа с ролями")
 @RestController
 @RequestMapping("roles")
 @RequiredArgsConstructor
-public class RoleController{
+public class RoleController {
     @Autowired
     private final RoleService roleService;
 
@@ -55,7 +51,7 @@ public class RoleController{
                         "description": "адм"
                     }
                     """)
-                                       RoleSpecs filter,
+                                           RoleSpecs filter,
                                    @PageableDefault() @ParameterObject @Nullable Pageable pageable) {
         return roleService.findAll(filter, pageable);
     }

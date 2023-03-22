@@ -85,7 +85,7 @@ public class CustomValidationException extends RuntimeException implements Excep
                     });
 
             }
-            if(children.stream().noneMatch(errMsg -> errMsg.getCode().equals(message.getCode()))){
+            if (children.stream().noneMatch(errMsg -> errMsg.getCode().equals(message.getCode()))) {
                 children.add(message);
             } else {
                 children.stream().findFirst().filter(errMsg -> errMsg.getCode().equals(message.getCode())).get().addAllParams(message.getParams());

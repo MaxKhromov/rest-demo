@@ -1,8 +1,6 @@
 package ru.rest.demo.rest.exception;
 
 
-import org.springframework.validation.BindingResult;
-
 import java.util.List;
 
 public class CustomUnexpectedException extends RuntimeException implements ExceptionBase {

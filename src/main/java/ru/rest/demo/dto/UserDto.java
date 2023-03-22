@@ -10,7 +10,6 @@ import ru.rest.demo.model.GenderEnum;
 import ru.rest.demo.model.Role;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Data

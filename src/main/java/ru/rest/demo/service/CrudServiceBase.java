@@ -3,15 +3,11 @@ package ru.rest.demo.service;
 
 import jakarta.annotation.Nullable;
 import org.hibernate.FetchNotFoundException;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import ru.rest.demo.dto.CustomPage;
 import ru.rest.demo.model.EntityBase;
-import ru.rest.demo.model.Userok;
 import ru.rest.demo.repo.RepositoryBase;
 import ru.rest.demo.rest.exception.CustomValidationException;
 
@@ -19,8 +15,6 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 public interface CrudServiceBase<T extends EntityBase<ID>, ID extends Serializable> {
     <F extends RepositoryBase<T, ID>> F getRepository();
@@ -52,7 +46,7 @@ public interface CrudServiceBase<T extends EntityBase<ID>, ID extends Serializab
         getRepository().delete(byId);
     }
 
-    default Class<?> getGenericInterfaceType(){
+    default Class<?> getGenericInterfaceType() {
         Class<?> clazz = getClass();
         ParameterizedType parameterizedType = (ParameterizedType) clazz.getGenericInterfaces()[0];
         Type[] typeArguments = parameterizedType.getActualTypeArguments();

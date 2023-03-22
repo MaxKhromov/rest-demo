@@ -10,7 +10,6 @@ import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
@@ -26,7 +25,6 @@ import ru.rest.demo.service.UserokService;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Tag(name = "Пользователи (user-controller)", description = "Работа с пользователями")
@@ -66,8 +64,8 @@ public class UserController implements DefaultDtoMapper<UserDto, Userok> {
                         "gender": ["MALE", "FEMALE"]
                     }
                     """)
-                                     UserokSpecs filter,
-                                     @PageableDefault() @ParameterObject @Nullable Pageable pageable) {
+                                              UserokSpecs filter,
+                                      @PageableDefault() @ParameterObject @Nullable Pageable pageable) {
         CustomPage<Userok> result = userokService.findAll(filter, pageable);
         List<UserDto> resultDtoContent = result.getContent().stream().map(this::convertToDto).toList();
         return new CustomPage<>(resultDtoContent, result.getPageable());

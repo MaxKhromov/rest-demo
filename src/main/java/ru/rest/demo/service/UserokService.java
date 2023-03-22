@@ -25,7 +25,7 @@ public class UserokService implements CrudServiceBase<Userok, UUID> {
     }
 
     @Override
-    public Userok save(Userok userok, @Nullable BindingResult errors){
+    public Userok save(Userok userok, @Nullable BindingResult errors) {
         if (errors.hasErrors()) {
             throw new CustomValidationException(errors);
         }

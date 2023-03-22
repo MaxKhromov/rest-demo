@@ -8,10 +8,8 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
 
 import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Entity
 @Schema(description = "Роль")
-public class Role extends EntityBase<Long>{
+public class Role extends EntityBase<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

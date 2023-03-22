@@ -12,11 +12,11 @@ public class ErrorMessage {
     List<Object> params = new ArrayList<>();
     List<ErrorMessage> children = new ArrayList<>();
 
-    public void addParam(String msg){
+    public void addParam(String msg) {
         this.params.add(msg);
     }
 
-    public void addAllParams(List<Object> msg){
+    public void addAllParams(List<Object> msg) {
         this.params.addAll(msg);
     }
 }

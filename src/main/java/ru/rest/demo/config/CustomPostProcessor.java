@@ -1,6 +1,5 @@
 package ru.rest.demo.config;
 
-import jakarta.annotation.Priority;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -23,6 +22,7 @@ public class CustomPostProcessor implements BeanDefinitionRegistryPostProcessor,
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 
     }
+
     @Override
     public int getOrder() {
         return Ordered.HIGHEST_PRECEDENCE;
