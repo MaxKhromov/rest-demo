@@ -9,7 +9,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Nullable;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.validation.BindingResult;
@@ -26,7 +25,7 @@ import ru.rest.demo.service.RoleService;
 @RequestMapping("roles")
 @RequiredArgsConstructor
 public class RoleController {
-    @Autowired
+
     private final RoleService roleService;
 
     @Operation(summary = "Получить список ролей")

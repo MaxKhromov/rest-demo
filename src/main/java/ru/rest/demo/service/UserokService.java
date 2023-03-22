@@ -1,7 +1,7 @@
 package ru.rest.demo.service;
 
 import jakarta.annotation.Nullable;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
@@ -12,11 +12,12 @@ import ru.rest.demo.rest.exception.CustomValidationException;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
+@SuppressWarnings({"unchecked"})
 public class UserokService implements CrudServiceBase<Userok, UUID> {
-    @Autowired
+
     UserRepository repository;
 
-    @Autowired
     PasswordEncoder passwordEncoder;
 
     @Override

@@ -8,5 +8,5 @@ import ru.rest.demo.model.EntityBase;
 import java.io.Serializable;
 
 @NoRepositoryBean
-public interface RepositoryBase<U extends EntityBase, ID extends Serializable> extends JpaRepository<U, ID>, JpaSpecificationExecutor<U> {
+public interface RepositoryBase<U extends EntityBase<ID>, ID extends Serializable> extends JpaRepository<U, ID>, JpaSpecificationExecutor<U> {
 }

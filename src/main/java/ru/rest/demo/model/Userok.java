@@ -55,6 +55,9 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
     @Schema(description = "Роли пользователя")
     private List<Role> roles;
 
+    /**
+     * @noinspection EqualsWhichDoesntCheckParameterClass
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,7 +73,7 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
         authorities.add(new SimpleGrantedAuthority("USER"));
         return authorities;
     }

@@ -18,9 +18,11 @@ public class CustomPostProcessor implements BeanDefinitionRegistryPostProcessor,
         registry.registerBeanDefinition("flywayConfig", someConfig);
     }
 
+    /**
+     * @noinspection NullableProblems
+     */
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-
     }
 
     @Override

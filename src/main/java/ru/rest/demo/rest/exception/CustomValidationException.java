@@ -1,5 +1,6 @@
 package ru.rest.demo.rest.exception;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
@@ -10,7 +11,6 @@ import java.util.stream.Collectors;
 
 public class CustomValidationException extends RuntimeException implements ExceptionBase {
     private final BindingResult errors;
-    private ErrorMessageEnum validationError;
 
     public CustomValidationException(BindingResult errors) {
         this.errors = errors;
@@ -65,42 +65,32 @@ public class CustomValidationException extends RuntimeException implements Excep
         errorsGroupedByType.forEach((type, objectErrorList) -> {
             ErrorMessage message = new ErrorMessage();
             switch (type) {
-                case "Email":
-                case "Pattern":
+                case "Email", "Pattern" -> {
                     message.setMessage(pramFormatError.getMessage());
                     message.setCode(pramFormatError.getCode());
                     objectErrorList.forEach(er -> {
                         FieldError validationFieldError = (FieldError) er;
                         message.addParam(validationFieldError.getField());
                     });
-                    break;
-                case "NotBlank":
-                case "NotNull":
-                default:
+                }
+                default -> {
                     message.setMessage(pramMissingError.getMessage());
                     message.setCode(pramMissingError.getCode());
                     objectErrorList.forEach(er -> {
                         FieldError validationFieldError = (FieldError) er;
                         message.addParam(validationFieldError.getField());
                     });
-
+                }
             }
             if (children.stream().noneMatch(errMsg -> errMsg.getCode().equals(message.getCode()))) {
                 children.add(message);
             } else {
-                children.stream().findFirst().filter(errMsg -> errMsg.getCode().equals(message.getCode())).get().addAllParams(message.getParams());
+                ErrorMessage existingErrorMessage = children.stream().findFirst().filter(errMsg -> errMsg.getCode().equals(message.getCode())).orElse(null);
+                if (ObjectUtils.isNotEmpty(existingErrorMessage))
+                    existingErrorMessage.addAllParams(message.getParams());
             }
         });
 
-
-//        message.setMessage(pramMissingError.getMessage());
-//        message.setCode(pramMissingError.getCode());
-//
-//        this.errors.getFieldErrors().forEach(er -> {
-//            message.addParam(er.getField());
-//        });
-
-//        parentError.setChildren(List.of(message));
         parentError.setChildren(children);
 
         ErrorModel error = new ErrorModel();

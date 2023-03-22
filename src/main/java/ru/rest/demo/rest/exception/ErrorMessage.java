@@ -1,6 +1,7 @@
 package ru.rest.demo.rest.exception;
 
 import lombok.Data;
+import org.apache.commons.lang3.ObjectUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,6 @@ public class ErrorMessage {
     }
 
     public void addAllParams(List<Object> msg) {
-        this.params.addAll(msg);
+        if (!ObjectUtils.isEmpty(msg)) this.params.addAll(msg);
     }
 }

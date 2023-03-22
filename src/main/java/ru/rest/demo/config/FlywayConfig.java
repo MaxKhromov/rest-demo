@@ -7,7 +7,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.sql.DataSource;
 import java.util.Map;
 
-
+/**
+ * @noinspection unused
+ */
 public class FlywayConfig {
 
     private final ApplicationContext context;

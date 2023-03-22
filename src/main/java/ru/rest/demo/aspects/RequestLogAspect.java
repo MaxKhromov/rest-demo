@@ -12,10 +12,12 @@ import org.springframework.util.StopWatch;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.lang.reflect.Method;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+/**
+ * @noinspection EmptyMethod, unused
+ */
 @Component
 @Slf4j
 @Aspect
@@ -35,7 +37,6 @@ public class RequestLogAspect {
                 .currentRequestAttributes())
                 .getRequest();
         final MethodSignature signature = (MethodSignature) pjp.getSignature();
-        final Method method = signature.getMethod();
         final StopWatch stopWatch = new StopWatch();
 
         try {

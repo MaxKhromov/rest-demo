@@ -1,28 +1,21 @@
 package ru.rest.demo.service;
 
-import jakarta.annotation.Nullable;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import ru.rest.demo.model.Role;
 import ru.rest.demo.repo.RoleRepository;
-import ru.rest.demo.rest.exception.CustomValidationException;
 
 @Service
+@AllArgsConstructor
+@SuppressWarnings({"unchecked"})
 public class RoleService implements CrudServiceBase<Role, Long> {
+
     RoleRepository repository;
 
     @Override
     public RoleRepository getRepository() {
         return repository;
-    }
-
-    @Override
-    public Role save(Role role, @Nullable BindingResult errors) {
-        if (errors.hasErrors()) {
-            throw new CustomValidationException(errors);
-        }
-
-        return getRepository().save(role);
     }
 
     @Override

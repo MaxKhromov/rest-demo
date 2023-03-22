@@ -25,6 +25,7 @@ public interface CrudServiceBase<T extends EntityBase<ID>, ID extends Serializab
             throw new CustomValidationException(errors);
         }
         return getRepository().save(entity);
+
     }
 
     <S extends T> S update(ID id, S patch, @Nullable BindingResult errors);
