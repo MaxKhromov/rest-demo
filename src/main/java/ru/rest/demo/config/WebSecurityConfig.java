@@ -22,7 +22,7 @@ import java.io.PrintWriter;
 public class WebSecurityConfig {
 
 
-    private BasicAuthenticationPoint basicAuthenticationPoint;
+    private final BasicAuthenticationPoint basicAuthenticationPoint;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
