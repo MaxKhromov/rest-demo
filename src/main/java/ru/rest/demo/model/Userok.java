@@ -53,7 +53,7 @@ public class Userok extends EntityBase<UUID> implements UserDetails {
 
     @ManyToMany
     @Schema(description = "Роли пользователя")
-    private Set<Role> roles;
+    private List<Role> roles;
 
     @Override
     public boolean equals(Object o) {

@@ -21,6 +21,7 @@ import ru.rest.demo.dto.DefaultDtoMapper;
 import ru.rest.demo.dto.UserDto;
 import ru.rest.demo.model.Userok;
 import ru.rest.demo.rest.filters.UserokSpecs;
+import ru.rest.demo.service.RoleService;
 import ru.rest.demo.service.UserokService;
 
 import java.util.List;
@@ -35,6 +36,8 @@ import java.util.stream.Collectors;
 public class UserController implements DefaultDtoMapper<UserDto, Userok> {
 
     private final UserokService userokService;
+
+    private final RoleService roleService;
 
     private final ModelMapper modelMapper;
 
@@ -96,6 +99,7 @@ public class UserController implements DefaultDtoMapper<UserDto, Userok> {
     @PostMapping()
     public UserDto create(@RequestBody @Validated UserDto userDto, BindingResult errors) {
         Userok userok = convertToEntity(userDto);
+        userok.setRoles(roleService.findById(userDto.getRolesIds()));
         return convertToDto(userokService.save(userok, errors));
     }
 
@@ -113,6 +117,7 @@ public class UserController implements DefaultDtoMapper<UserDto, Userok> {
     @PutMapping("/{id}")
     public UserDto update(@PathVariable UUID id, @RequestBody @Validated UserDto patch, BindingResult errors) {
         Userok userokPatch = convertToEntity(patch);
+        userokPatch.setRoles(roleService.findById(patch.getRolesIds()));
         return convertToDto(userokService.update(id, userokPatch, errors));
     }
 

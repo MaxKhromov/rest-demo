@@ -1,5 +1,6 @@
 package ru.rest.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -15,8 +16,10 @@ import java.util.UUID;
 public abstract class EntityBase<ID extends Serializable> {
 
     @Schema(description = "Дата и время создания объекта")
+    @JsonIgnore
     private LocalDateTime createdAt;
     @Schema(description = "Дата и время последнего изменения объекта")
+    @JsonIgnore
     private LocalDateTime modifiedAt;
 
     @PrePersist

@@ -8,7 +8,9 @@ import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 //T - DTO
 //S - Entity
@@ -32,19 +34,4 @@ public interface DefaultDtoMapper<D extends DtoBase, E> {
         return (Class<?>) typeArguments[index];
     }
 
-    //Generated via GPT
-    default List<Long> extractIds(Object obj) throws IllegalAccessException {
-        List<Long> ids = new ArrayList<>();
-        for (Field field : obj.getClass().getDeclaredFields()) {
-            if (field.getName().endsWith("Ids") && field.getType().isAssignableFrom(List.class)) {
-                field.setAccessible(true);
-                List<?> temp = (List<?>) field.get(obj);
-                for (Object item : temp) {
-                    ids.add(Long.parseLong(item.toString()));
-                }
-            }
-        }
-
-        return ids;
-    }
 }

@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @Service
 public class RoleService implements CrudServiceBase<Role, Long>{
-    @Autowired
     RoleRepository repository;
 
     @Override
